@@ -13,7 +13,6 @@
 
 ' Python installation script for Windows.
 ' To run this script, type "cscript install-python.vbs && exit" from the command line.
-
 dim fso: set fso = CreateObject ("Scripting.FileSystemObject")
 dim stdout: set stdout = fso.GetStandardStream(1)
 currentDirectory = left(WScript.ScriptFullName,(Len(WScript.ScriptFullName))-(len(WScript.ScriptName)))
