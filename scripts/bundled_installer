@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# ******************************************************************
+#   ABOUT
+# ******************************************************************
+#
+# This script installs:
+#
+#   - the latest (or close to it) Python
+#   - the latest version of the EBCLI
+export PYTHON_VERSION="3.7.3"
+export PYENV_ROOT="$HOME/.pyenv"
+export PYENV_BIN="$PYENV_ROOT/versions/$PYTHON_VERSION/bin"
+
+function change_to_scripts_directory() {
+    SCRIPTS_DIRECTORY=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+
+    cd "$SCRIPTS_DIRECTORY"
+}
+
+function echo_with_colors_inverted()
+{
+    MESSAGE=$1
+    echo -e "\033[7m$MESSAGE\033[0m"
+}
+
+function exit_if_return_code_is_non_zero() {
+    if [[ $? -ne 0 ]] ; then
+        echo_with_indentation "Exiting due to failure"
+
+        exit $?
+    fi
+}
+
+function install_python() {
+    echo ""
+    echo_with_colors_inverted "=============================================="
+    echo_with_colors_inverted "I. Installing Python                          "
+    echo_with_colors_inverted "=============================================="
+    if [ -f python_installer ]; then
+        ./python_installer
+        exit_if_return_code_is_non_zero
+    fi
+}
+
+function install_ebcli() {
+    echo ""
+    echo_with_colors_inverted "=============================================="
+    echo_with_colors_inverted "II. Creating self-contained EBCLI installation"
+    echo_with_colors_inverted "=============================================="
+    if [ -f ebcli_installer.py ]; then
+        ${PYENV_BIN}/python ./ebcli_installer.py \
+            --python-installation ${PYENV_BIN}/python \
+            --virtualenv-executable ${PYENV_BIN}/virtualenv
+        exit_if_return_code_is_non_zero
+    fi
+}
+
+change_to_scripts_directory
+install_python
+install_ebcli
