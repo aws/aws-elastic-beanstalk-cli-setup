@@ -1,0 +1,170 @@
+#!/usr/bin/env bash
+# ******************************************************************
+#   ABOUT
+# ******************************************************************
+#
+#   This script installs:
+#
+#   1. the latest (or close to it) version of Python through the `pyenv`
+#      project on Linux-/Unix-based machines.
+#
+#   2. virtualenv within the bin/ directory of the above Python
+#      installation
+#
+#   Prerequisites:
+#       - Git
+#       - Bash
+#
+#   Usage:
+#
+#       ./python_installer
+#
+#
+BASH_PROFILE="$HOME/.bash_profile"
+ZSHENV="$HOME/.zshrc"
+COMMAND_LINE_ARGS=$*
+PYTHON_VERSION="3.7.3"
+PYENV_ROOT="$HOME/.pyenv"
+
+if [ ! -d ${PYENV_ROOT} ]; then
+    mkdir ${PYENV_ROOT}
+fi
+
+PYENV_BIN="$PYENV_ROOT/versions/$PYTHON_VERSION/bin"
+PYENV_REPOSITORY_LOCATION="$HOME/.pyenv-repository"
+PYENV_GITHUB_LOCATION="https://github.com/pyenv/pyenv.git"
+# commit associated with the pyenv release 1.2.9
+PYENV_REPOSITORY_RELEASE_CANDIDATE="3f39e8a944943b17dc8cba473d160aabc7f76796"
+STEP_NUMBER=1
+
+
+function exit_if_return_code_is_non_zero() {
+    if [[ $? -ne 0 ]] ; then
+        echo_with_indentation "Exiting due to failure"
+
+        exit $?
+    fi
+}
+
+function echo_step_title() {
+    local step_message=$1
+    step_message="$STEP_NUMBER. $step_message"
+    local message_length=${#step_message}
+    local repeated_stars=$(head -c ${message_length} /dev/zero | tr '\0' '*')
+    repeated_stars="$repeated_stars"
+    echo ""
+    echo "$repeated_stars"
+    echo ${step_message}
+    echo "$repeated_stars"
+    STEP_NUMBER=$(($STEP_NUMBER + 1))
+}
+
+function echo_with_indentation() {
+    local message=$1
+    echo -e "   $message"
+}
+
+function echo_recommendation_message() {
+    local message=$1
+    echo_with_indentation "\033[38;5;11m$message\033[0m"
+}
+
+function echo_success_message() {
+    local message=$1
+    echo_with_indentation "\033[38;5;2m$message\033[0m"
+}
+
+function print_path_export_instructions() {
+    echo_with_indentation ""
+    echo_recommendation_message " - NOTE: To complete installation, ensure \`python\` is in PATH. You can ensure this by executing:"
+    echo_with_indentation ""
+    echo_recommendation_message "   1. Bash:"
+    echo_with_indentation ""
+    echo_recommendation_message "      echo 'export PATH="${PYENV_BIN}:\$PATH"' >> $BASH_PROFILE && source $BASH_PROFILE"
+    echo_with_indentation ""
+    echo_recommendation_message "   2. Zsh:"
+    echo_with_indentation ""
+    echo_recommendation_message "      echo 'export PATH="${PYENV_BIN}:\$PATH"' >> $ZSHENV && source $ZSHENV"
+}
+
+function python_is_not_in_path() {
+    if [[ ":$PATH:" != *":$PYENV_BIN:"* ]]; then
+        return 0
+    fi
+    return 1
+}
+
+function install_python() {
+    pyenv install "$PYTHON_VERSION" --skip-existing
+    exit_if_return_code_is_non_zero
+    echo_success_message " - Python $PYTHON_VERSION is installed at $PYENV_BIN"
+
+    if python_is_not_in_path; then
+        print_path_export_instructions
+    else
+        echo ""
+        echo_with_indentation " - $PYENV_BIN is already in PATH no further action need be taken."
+    fi
+}
+
+function pyenv_executable_found() {
+    which pyenv > /dev/null 2>&1
+
+    return $?
+}
+
+function checkout_specific_branch() {
+    git checkout -b rel-1.2.9 ${PYENV_REPOSITORY_RELEASE_CANDIDATE}
+}
+
+function install_pyenv_build() {
+    ${PYENV_REPOSITORY_LOCATION} ./install.sh
+}
+
+function clone_pyenv_repository() {
+    if [ ! -d "$PYENV_REPOSITORY_LOCATION" ]; then
+        echo_step_title "Cloning the pyenv GitHub project located at $PYENV_GITHUB_LOCATION"
+
+        git clone "$PYENV_GITHUB_LOCATION" "$PYENV_REPOSITORY_LOCATION"
+        THIS_DIRECTORY=`pwd`
+        cd "$PYENV_REPOSITORY_LOCATION"
+        checkout_specific_branch
+        cd pyenv/plugins/python-build
+        install_pyenv_build
+        cd ${THIS_DIRECTORY}
+        exit_if_return_code_is_non_zero
+    else
+        echo_with_indentation " - pyenv git repository already cloned to $PYENV_REPOSITORY_LOCATION. Won't attempt to clone again."
+    fi
+}
+
+function install_virtualenv() {
+    ${PYENV_BIN}/pip install virtualenv
+}
+
+function export_pyenv_and_pyenv_repository_paths() {
+    export PATH="$PYENV_ROOT/bin:$PYENV_REPOSITORY_LOCATION/bin:$PATH"
+}
+
+function main() {
+    echo_step_title "Determining whether pyenv is already installed and in PATH"
+
+    if pyenv_executable_found ; then
+        echo_with_indentation " - pyenv found in PATH. Won't clone pyenv git repository from GitHub"
+    else
+        echo_with_indentation " - pyenv was not found in PATH."
+
+        echo_step_title "Determining whether pyenv should be cloned from GitHub"
+        clone_pyenv_repository
+    fi
+
+    echo_step_title "Temporarily export necessary pyenv paths"
+    export_pyenv_and_pyenv_repository_paths
+
+    echo_step_title "Installing Python $PYTHON_VERSION"
+    install_python
+
+    echo_step_title "Installing virtualenv using $PYENV_BIN/pip"
+    install_virtualenv
+}
+main
