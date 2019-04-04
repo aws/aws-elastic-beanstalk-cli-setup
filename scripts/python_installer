@@ -23,14 +23,14 @@
 BASH_PROFILE="$HOME/.bash_profile"
 ZSHENV="$HOME/.zshrc"
 COMMAND_LINE_ARGS=$*
-PYTHON_VERSION="3.7.3"
-PYENV_ROOT="$HOME/.pyenv"
+PYTHON_VERSION=${PYTHON_VERSION:="3.7.3"}
+PYENV_ROOT=${PYENV_ROOT:="$HOME/.pyenv"}
 
 if [ ! -d ${PYENV_ROOT} ]; then
     mkdir ${PYENV_ROOT}
 fi
 
-PYENV_BIN="$PYENV_ROOT/versions/$PYTHON_VERSION/bin"
+PYENV_BIN=${PYENV_BIN:="$PYENV_ROOT/versions/$PYTHON_VERSION/bin"}
 PYENV_REPOSITORY_LOCATION="$HOME/.pyenv-repository"
 PYENV_GITHUB_LOCATION="https://github.com/pyenv/pyenv.git"
 # commit associated with the pyenv release 1.2.9
