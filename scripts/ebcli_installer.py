@@ -198,6 +198,10 @@ RED_COLOR_CODE = 9
 YELLOW_COLOR_CODE = 11
 
 
+class ArgumentError(Exception):
+    pass
+
+
 class Step(object):
     """
     Class labels an installation Step and is expected to be invoked as
@@ -318,9 +322,24 @@ def _announce_success(virtualenv_location):
 
 
 def _print_in_foreground(message, color_number):
+    """
+    Function prints a given `message` on the terminal in the foreground. `color_number`
+    is a number between and including 0 and 255. FOr a list of color codes see:
+
+        https://misc.flogisoft.com/bash/tip_colors_and_formatting#background1
+
+    On Windows, `color_number` is rejected, and hence not used. At present, PowerShell
+    is able to recognize ANSI/VT100 escape sequences, however, CMD prompt is not.
+
+    :param message: a string to print in the foreground on the terminal
+    :param color_number: an integer between and including 0 and 255 representing
+                         a color
+    :return: None
+    """
     if sys.platform.startswith('win32'):
         print(message)
     else:
+        # Courtesy https://misc.flogisoft.com/bash/tip_colors_and_formatting
         print(
             "\033[38;5;{color_number}m{message}\033[0m".format(
                 color_number=color_number,
@@ -456,17 +475,23 @@ def _generate_ebcli_wrappers(virtualenv_location):
 
 
 @Step('Installing EBCLI')
-def _install_ebcli(quiet, version):
+def _install_ebcli(quiet, version, ebcli_source):
     """
     Function installs the awsebcli presumably within the virtualenv,
     ".ebcli-virtual-env", created and activated by this script apriori.
     If `version` is passed, the specific version of the EBCLI is installed.
+
+    The presence of `version` and `ebcli_source` will lead to an exception
+    as they represent two different ways of installing the EBCLI.
+
     :param quiet: whether to display the output of awsebcli installation to
                   the terminal or not
     :param version: the specific version of awsebcli to install
     :return None
     """
-    if version:
+    if ebcli_source:
+        install_args = ['pip', 'install', '{}'.format(ebcli_source.strip())]
+    elif version:
         install_args = ['pip', 'install', 'awsebcli=={}'.format(version.strip())]
     else:
         install_args = [
@@ -650,10 +675,23 @@ def _parse_arguments():
         help='enable quiet mode to display only minimal, necessary output'
     )
     parser.add_argument(
+        '-s', '--ebcli-source',
+        help='filesystem path to a Git repository of the EBCLI, or a .zip or .tar file of '
+             'the EBCLI source code; useful when testing a development version of the EBCLI.'
+    )
+    parser.add_argument(
         '-v', '--version',
         help='version of EBCLI to install'
     )
-    return parser.parse_args()
+
+    arguments = parser.parse_args()
+
+    if arguments.version and arguments.ebcli_source:
+        raise ArgumentError(
+            '"--version" and "--ebcli-source" cannot be used together '
+            'because they represent two distinct sources of the EBCLI.'
+        )
+    return arguments
 
 
 def _pip_executable_found(quiet):
@@ -723,6 +761,10 @@ if __name__ == '__main__':
         arguments_context.quiet
     )
     _activate_virtualenv(virtualenv_location)
-    _install_ebcli(arguments_context.quiet, arguments_context.version)
+    _install_ebcli(
+        arguments_context.quiet,
+        arguments_context.version,
+        arguments_context.ebcli_source
+    )
     _generate_ebcli_wrappers(virtualenv_location)
     _announce_success(virtualenv_location)
