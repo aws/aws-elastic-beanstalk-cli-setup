@@ -36,6 +36,10 @@ if sys.version_info < (3, 0):
 EBCLI_INSTALLER_STAMP = '.ebcli_installer_stamp'
 
 
+with open(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'VERSION')) as version_file:
+    EBCLI_INSTALLER_VERSION = version_file.read().strip()
+
+
 EXECUTABLE_WRAPPERS = {
     'bat': '\n'.join(
         [
@@ -725,7 +729,11 @@ def _parse_arguments():
              arguments passed by the user.
     """
     parser = argparse.ArgumentParser(
-        usage='python bundled_script.py [optional arguments]'
+        description='EBCLI installer {}\n\n'
+                    'This program creates an isolated virtualenv solely meant for invoking '
+                    '`eb` within.'.format(EBCLI_INSTALLER_VERSION),
+        usage='python {file_name} [optional arguments]'.format(file_name=__file__),
+        formatter_class=argparse.RawTextHelpFormatter
     )
     parser.add_argument(
         '-e', '--virtualenv-executable',
@@ -738,7 +746,7 @@ def _parse_arguments():
     parser.add_argument(
         '-p', '--python-installation',
         help='path to the python installation under which to install the '
-             'awsebcli and its dependencies'
+             'awsebcli and its \ndependencies'
     )
     parser.add_argument(
         '-q', '--quiet',
@@ -747,7 +755,7 @@ def _parse_arguments():
     )
     parser.add_argument(
         '-s', '--ebcli-source',
-        help='filesystem path to a Git repository of the EBCLI, or a .zip or .tar file of '
+        help='filesystem path to a Git repository of the EBCLI, or a .zip or .tar file of \n'
              'the EBCLI source code; useful when testing a development version of the EBCLI.'
     )
     parser.add_argument(
