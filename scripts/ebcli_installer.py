@@ -33,6 +33,9 @@ if sys.version_info < (3, 0):
     input = raw_input
 
 
+EBCLI_INSTALLER_STAMP = '.ebcli_installer_stamp'
+
+
 EXECUTABLE_WRAPPERS = {
     'bat': '\n'.join(
         [
@@ -378,6 +381,15 @@ def _create_virtualenv(
           of execution of this script and now
         - this script was executed with a Python executable not in PATH
 
+    Prior to creation of the virtualenv, this function checks whether
+    one by name `.ebcli-virtual-env` already exists. If this directory
+    was not created by this installer, installation halts and the user
+    is asked to either delete the directory or to specify an alternate
+    location using the `--location` argument of this script.
+
+    In all other cases, `.ebcli-virtual-env` is (re)created and a file
+    to denote that the installer created `.ebcli-virtual-env` is added.
+
     :param virtualenv_executable: the name of the virtualenv executable
     :param virtualenv_location: the relative or absolute path to the location
                                 where the virtualenv, ".ebcli-virtual-env", must
@@ -392,10 +404,29 @@ def _create_virtualenv(
             virtualenv, ".ebcli-virtual-env", was created.
     """
     virtualenv_location = virtualenv_location or _user_local_directory()
+    virtualenv_directory = os.path.join(virtualenv_location, VIRTUALENV_DIR_NAME)
+
+    if (
+        os.path.exists(virtualenv_directory)
+        and not _directory_was_created_by_installer(virtualenv_directory)
+    ):
+        _error(
+            'Installation cannot proceed because "{virtualenv_location}" already exists '
+                'but was not created by this EBCLI installer.'
+            '\n'
+            '\n'
+            'You can either:\n'
+            '\n'
+            '1. Delete "{virtualenv_location}" after verifying you don\'t need it; OR\n'
+            '2. Specify an alternate location to install the EBCLI and its artifacts in '
+                'using the `--location` argument of this script .\n'.format(
+                virtualenv_location=virtualenv_directory
+            )
+        )
 
     virtualenv_args = [
         virtualenv_executable,
-        os.path.join(virtualenv_location, VIRTUALENV_DIR_NAME)
+        virtualenv_directory
     ]
 
     python_installation and virtualenv_args.extend(
@@ -404,6 +435,8 @@ def _create_virtualenv(
 
     if _exec_cmd(virtualenv_args, quiet) != 0:
         exit(1)
+
+    _add_ebcli_stamp(virtualenv_directory)
 
     return virtualenv_location
 
@@ -502,6 +535,26 @@ def _install_ebcli(quiet, version, ebcli_source):
     _exec_cmd(install_args, quiet)
 
 
+def _add_ebcli_stamp(virtualenv_directory):
+    """
+    Function adds a stamp in the form of a file, `EBCLI_INSTALLER_STAMP`
+    to recognize during future executions of this script that it created
+    it.
+
+    :param virtualenv_directory: The directory where the EBCLI and its artifacts
+    will be installed
+    :return: None
+    """
+    with open(
+        os.path.join(
+            virtualenv_directory,
+            EBCLI_INSTALLER_STAMP
+        ),
+        'w'
+    ) as file:
+        file.write('\n')
+
+
 def _bat_script_body(virtualenv_location):
     """
     Function returns a CMD Prompt (bat) script which essentially will
@@ -514,6 +567,24 @@ def _bat_script_body(virtualenv_location):
     """
     return EXECUTABLE_WRAPPERS['bat'].format(
         bin_location=_original_eb_location(virtualenv_location)
+    )
+
+
+def _directory_was_created_by_installer(virtualenv_directory):
+    """
+    Function checks whether `virtualenv_directory` was previously created
+    by this script.
+
+    :param virtualenv_directory: The directory where the EBCLI and its
+                                 artifacts will be installed.
+    :return: Boolean indicating whether `virtualenv_directory` was created
+             by this script or not.
+    """
+    return os.path.exists(
+        os.path.join(
+            virtualenv_directory,
+            EBCLI_INSTALLER_STAMP
+        )
     )
 
 
