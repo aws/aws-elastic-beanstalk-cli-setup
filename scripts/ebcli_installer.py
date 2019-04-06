@@ -35,8 +35,8 @@ if sys.version_info < (3, 0):
 
 EBCLI_INSTALLER_STAMP = '.ebcli_installer_stamp'
 
-
-with open(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'VERSION')) as version_file:
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+with open(os.path.join(PROJECT_ROOT, 'VERSION')) as version_file:
     EBCLI_INSTALLER_VERSION = version_file.read().strip()
 
 
