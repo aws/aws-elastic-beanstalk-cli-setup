@@ -38,6 +38,10 @@ python .\aws-elasticbeanstalk-cli-setup\scripts\bundled_installer
 
 The emitted output will contain instructions to add the EBCLI (and Python) executable to the shell's `$PATH` variable, if it is not already in it. Ensure you follow the steps emitted in the output.
 
+#### 2.4. Demo execution of `bundled_installer`
+
+![Demo](./DEMO.png)
+
 ### 3. Advanced usage:
 
 To install the EBCLI, `bundled_installer` runs `ebcli_installer.py`. `ebcli_installer.py` has the following capabilities:
