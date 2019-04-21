@@ -30,7 +30,7 @@ function Download-Python {
 
 if (Assert-IsPythonRequired) {
     if (Download-Python) {
-        Write-Host "Silently installing Python. Do not close this window."
+        Write-Host "Installing Python. Do not close this window."
         $install = Start-Process $python -ArgumentList "/quiet InstallAllUsers=1 PrependPath=1" -PassThru -wait
         if ($install.ExitCode -eq 0) {
             Write-Host "Installation completed successfully."
