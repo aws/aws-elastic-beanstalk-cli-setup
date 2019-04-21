@@ -344,7 +344,18 @@ def _print_in_foreground(message, color_number):
     :return: None
     """
     if sys.platform.startswith('win32'):
-        print(message)
+        import colorama
+        colorama.init()
+        if color_number == GREEN_COLOR_CODE:
+            print(colorama.Fore.GREEN + message)
+        elif color_number == RED_COLOR_CODE:
+            print(colorama.Fore.RED + message)
+        elif color_number == YELLOW_COLOR_CODE:
+            print(colorama.Fore.LIGHTYELLOW_EX + message)
+        else:
+            print(message)
+        print(colorama.Style.RESET_ALL)
+
     else:
         # Courtesy https://misc.flogisoft.com/bash/tip_colors_and_formatting
         print(
