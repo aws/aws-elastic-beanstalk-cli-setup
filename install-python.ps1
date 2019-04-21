@@ -11,24 +11,21 @@ function Cleanup {
     Stop-Process $PID
 }
 
-function Download-Python {
-    $url = ""
-
+function Get-PythonInstallationTarget {
     if ([Environment]::Is64BitOperatingSystem) {
         Write-Host "Downloading x64 version of Python."
-        $url = "https://www.python.org/ftp/python/3.7.3/python-3.7.3-amd64-webinstall.exe"
+        return "https://www.python.org/ftp/python/3.7.3/python-3.7.3-amd64-webinstall.exe"
     } else {
         Write-Host "Downloading x86 version of Python."
-        $url = "https://www.python.org/ftp/python/3.7.3/python-3.7.3-webinstall.exe"
+        return "https://www.python.org/ftp/python/3.7.3/python-3.7.3-webinstall.exe"
     }
+}
 
-    if (-not ([string]::IsNullOrEmpty($url))) {
-        $client = New-Object System.Net.WebClient
-        $client.DownloadFile($url, $python)
-        return $True
-    }
-
-    return $False
+function Download-Python {
+    $url = Get-PythonInstallationTarget
+    $client = New-Object System.Net.WebClient
+    $client.DownloadFile($url, $PythonInstaller)
+    return $True
 }
 
 if (Assert-IsPythonRequired) {
