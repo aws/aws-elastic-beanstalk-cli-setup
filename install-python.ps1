@@ -16,6 +16,9 @@ function Get-PythonInstallationTarget {
 }
 
 function Download-Python {
+    if ([System.IO.File]::Exists($PythonInstaller)) {
+        Remove-Item $PythonInstaller
+    }
     $url = Get-PythonInstallationTarget
     $client = New-Object System.Net.WebClient
     try {
