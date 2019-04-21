@@ -120,7 +120,7 @@ exit(_exec_cmd(['{bin_location}/eb'] + sys.argv[1:]))
 
 PATH_EXPORTER_SCRIPTS = {
     'bat': 'WSCript {path_exporter_script}\n',
-    'vbs': ' '.join(
+    'vbs': '\n'.join(
         [
             'Set wshShell = CreateObject( "WScript.Shell" )',
             'Set wshUserEnv = wshShell.Environment( "USER" )',
