@@ -64,6 +64,11 @@ function Update-UserEnvironmentPath {
         [System.Environment]::GetEnvironmentVariable("Path","User")
 }
 
+function Install-Virtualenv {
+    Write-StepTitle "Installing virtualenv"
+    Invoke-Expression "pip install virtualenv --target $PSScriptRoot\virtualenv --upgrade"
+}
+
 $PythonExecutable = Get-PythonExecutable
 if ($PythonExecutable.count -eq 0) {
     Get-PythonMSI
@@ -71,6 +76,6 @@ if ($PythonExecutable.count -eq 0) {
     Update-UserEnvironmentPath
     Remove-Item $PythonInstaller
 } else {
-    Write-Host "Python 3.7.3 is already installed."
+    Write-Host "Python 3.7.3 is already installed." -ForegroundColor Green
 }
->>>>>>> bec068f... Highlight success/failure messages printed by install-python.ps1 in green/red
+Install-Virtualenv
