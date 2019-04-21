@@ -35,6 +35,8 @@ function Install-Python {
     $install = Start-Process $PythonInstaller -ArgumentList "InstallAllUsers=1 PrependPath=1" -PassThru -wait
     if ($install.ExitCode -eq 0) {
         Write-Host "Installation completed successfully."
+    } elseif ($install.ExitCode -eq 1602) {
+        Write-Host "Installer was exited by the user."
     } else {
         Write-Host "Installation failed with exit code $install.ExitCode"
     }
