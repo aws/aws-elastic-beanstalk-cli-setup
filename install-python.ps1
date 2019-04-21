@@ -12,21 +12,14 @@ function Cleanup {
 }
 
 function Download-Python {
-    $arch ="$env:PROCESSOR_ARCHITECTURE"
     $url = ""
 
-    switch($arch) {
-        "amd64" {
-            Write-Host "Downloading x64 version of Python."
-            $url = "https://www.python.org/ftp/python/3.7.3/python-3.7.3-amd64-webinstall.exe"
-        }
-        "x86" {
-            Write-Host "Downloading x86 version of Python."
-	        $url = "https://www.python.org/ftp/python/3.7.3/python-3.7.3-webinstall.exe"
-        }
-        default {
-            Write-Host "Unable to determine the Python download url for processor type: $arch."
-        }
+    if ([Environment]::Is64BitOperatingSystem) {
+        Write-Host "Downloading x64 version of Python."
+        $url = "https://www.python.org/ftp/python/3.7.3/python-3.7.3-amd64-webinstall.exe"
+    } else {
+        Write-Host "Downloading x86 version of Python."
+        $url = "https://www.python.org/ftp/python/3.7.3/python-3.7.3-webinstall.exe"
     }
 
     if (-not ([string]::IsNullOrEmpty($url))) {
