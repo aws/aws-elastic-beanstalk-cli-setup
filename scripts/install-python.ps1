@@ -36,8 +36,8 @@ function Get-PythonMSI {
     try {
         $client.DownloadFile($url, $PythonInstaller)
     } catch {
-        Write-Host "Failed to download Python. The following exception was raised:"
-        Write-Host $_.exception
+        Write-Host "Failed to download Python. The following exception was raised:" -ForegroundColor Red
+        Write-Host $_.exception -ForegroundColor Red
 
         Exit 1
     }
@@ -48,11 +48,11 @@ function Install-Python {
     Write-Host "Installing Python. Do not close this window."
     $install = Start-Process $PythonInstaller -ArgumentList "InstallAllUsers=1 PrependPath=1" -PassThru -wait
     if ($install.ExitCode -eq 0) {
-        Write-Host "Installation completed successfully."
+        Write-Host "Installation completed successfully." -ForegroundColor Green
     } elseif ($install.ExitCode -eq 1602) {
-        Write-Host "Installer was exited by the user."
+        Write-Host "Installer was exited by the user." -ForegroundColor Red
     } else {
-        Write-Host "Installation failed with exit code $install.ExitCode"
+        Write-Host "Installation failed with exit code $install.ExitCode" -ForegroundColor Red
     }
 }
 
@@ -73,3 +73,4 @@ if ($PythonExecutable.count -eq 0) {
 } else {
     Write-Host "Python 3.7.3 is already installed."
 }
+>>>>>>> bec068f... Highlight success/failure messages printed by install-python.ps1 in green/red
