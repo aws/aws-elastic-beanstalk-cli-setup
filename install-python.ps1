@@ -34,16 +34,19 @@ function Download-Python {
     }
 }
 
-if (Assert-IsPythonRequired) {
-    Download-Python
+function Install-Python {
     Write-Host "Installing Python. Do not close this window."
     $install = Start-Process $PythonInstaller -ArgumentList "/quiet InstallAllUsers=1 PrependPath=1" -PassThru -wait
     if ($install.ExitCode -eq 0) {
         Write-Host "Installation completed successfully."
-    }
-    else {
+    } else {
         Write-Host "Installation failed with exit code $install.ExitCode"
     }
+}
+
+if (Assert-IsPythonRequired) {
+    Download-Python
+    Install-Python
 }
 
 Cleanup
