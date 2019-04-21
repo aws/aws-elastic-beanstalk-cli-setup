@@ -41,6 +41,13 @@ function Install-Python {
     }
 }
 
+function Update-UserEnvironmentPath {
+    $env:Path =
+        [System.Environment]::GetEnvironmentVariable("Path","Machine") +
+        ";" +
+        [System.Environment]::GetEnvironmentVariable("Path","User")
+}
+
 if (Assert-IsPythonRequired) {
     Download-Python
     Install-Python
