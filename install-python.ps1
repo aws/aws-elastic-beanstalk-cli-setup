@@ -5,12 +5,6 @@ function Assert-IsPythonRequired {
     return $result.Count -eq 0
 }
 
-function Cleanup {
-    Remove-Item $PythonInstaller
-    Start-Process powershell
-    Stop-Process $PID
-}
-
 function Get-PythonInstallationTarget {
     if ([Environment]::Is64BitOperatingSystem) {
         Write-Host "Downloading x64 version of Python."
@@ -47,6 +41,6 @@ function Install-Python {
 if (Assert-IsPythonRequired) {
     Download-Python
     Install-Python
+    Update-UserEnvironmentPath
+    Remove-Item $PythonInstaller
 }
-
-Cleanup
