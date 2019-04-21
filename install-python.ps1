@@ -1,8 +1,7 @@
 $PythonInstaller = "$PSScriptRoot\python3.7.3.exe"
 
-function Assert-IsPythonRequired {
-    $result = Get-WmiObject -Namespace "root/cimv2" -Class Win32_Product -Filter "Name Like 'Python 3.7.3 Executables%'"
-    return $result.Count -eq 0
+function Get-PythonExecutable {
+    return Get-WmiObject -Namespace "root/cimv2" -Class Win32_Product -Filter "Name Like 'Python 3.7.3 Executables%'"
 }
 
 function Get-PythonInstallationTarget {
@@ -48,9 +47,12 @@ function Update-UserEnvironmentPath {
         [System.Environment]::GetEnvironmentVariable("Path","User")
 }
 
-if (Assert-IsPythonRequired) {
+$PythonExecutable = Get-PythonExecutable
+if ($PythonExecutable.count -eq 0) {
     Get-PythonMSI
     Install-Python
     Update-UserEnvironmentPath
     Remove-Item $PythonInstaller
+} else {
+    Write-Host "Python 3.7.3 is already installed."
 }
