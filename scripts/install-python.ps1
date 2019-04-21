@@ -1,15 +1,28 @@
 $PythonInstaller = "$PSScriptRoot\python3.7.3.exe"
+$StepNumber = 1
+
+function Write-StepTitle([String] $StepMessage) {
+    $StepMessage="$Script:StepNumber. $StepMessage"
+    $MessageLength=$StepMessage.length
+    $RepeatedStars = "*" * $MessageLength
+    Write-Host ""
+    Write-Host $RepeatedStars
+    Write-Host $StepMessage
+    Write-Host $RepeatedStars
+    $Script:StepNumber = $Script:StepNumber + 1
+}
 
 function Get-PythonExecutable {
+    Write-StepTitle "Looking for existing Python 3.7.3 installation."
     return Get-WmiObject -Namespace "root/cimv2" -Class Win32_Product -Filter "Name Like 'Python 3.7.3 Executables%'"
 }
 
 function Get-PythonInstallationTarget {
     if ([Environment]::Is64BitOperatingSystem) {
-        Write-Host "Downloading x64 version of Python."
+        Write-StepTitle "Downloading x64 version of Python."
         return "https://www.python.org/ftp/python/3.7.3/python-3.7.3-amd64-webinstall.exe"
     } else {
-        Write-Host "Downloading x86 version of Python."
+        Write-StepTitle "Downloading x86 version of Python."
         return "https://www.python.org/ftp/python/3.7.3/python-3.7.3-webinstall.exe"
     }
 }
@@ -31,6 +44,7 @@ function Get-PythonMSI {
 }
 
 function Install-Python {
+    Write-StepTitle "Installing Python. Do not close this window."
     Write-Host "Installing Python. Do not close this window."
     $install = Start-Process $PythonInstaller -ArgumentList "InstallAllUsers=1 PrependPath=1" -PassThru -wait
     if ($install.ExitCode -eq 0) {
@@ -43,6 +57,7 @@ function Install-Python {
 }
 
 function Update-UserEnvironmentPath {
+    Write-StepTitle "Updating Environment PATH of this shell."
     $env:Path =
         [System.Environment]::GetEnvironmentVariable("Path","Machine") +
         ";" +
