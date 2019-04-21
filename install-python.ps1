@@ -15,7 +15,7 @@ function Get-PythonInstallationTarget {
     }
 }
 
-function Download-Python {
+function Get-PythonMSI {
     if ([System.IO.File]::Exists($PythonInstaller)) {
         Remove-Item $PythonInstaller
     }
@@ -49,7 +49,7 @@ function Update-UserEnvironmentPath {
 }
 
 if (Assert-IsPythonRequired) {
-    Download-Python
+    Get-PythonMSI
     Install-Python
     Update-UserEnvironmentPath
     Remove-Item $PythonInstaller
