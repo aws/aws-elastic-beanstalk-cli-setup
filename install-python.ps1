@@ -1,4 +1,4 @@
-$python = "$PSScriptRoot\python3.7.3.exe"
+$PythonInstaller = "$PSScriptRoot\python3.7.3.exe"
 
 function Assert-IsPythonRequired {
     $result = Get-WmiObject -Namespace "root/cimv2" -Class Win32_Product -Filter "Name Like 'Python 3.7.3 Executables%'"
@@ -6,7 +6,7 @@ function Assert-IsPythonRequired {
 }
 
 function Cleanup {
-    Remove-Item $python
+    Remove-Item $PythonInstaller
     Start-Process powershell
     Stop-Process $PID
 }
@@ -31,7 +31,7 @@ function Download-Python {
 if (Assert-IsPythonRequired) {
     if (Download-Python) {
         Write-Host "Installing Python. Do not close this window."
-        $install = Start-Process $python -ArgumentList "/quiet InstallAllUsers=1 PrependPath=1" -PassThru -wait
+        $install = Start-Process $PythonInstaller -ArgumentList "/quiet InstallAllUsers=1 PrependPath=1" -PassThru -wait
         if ($install.ExitCode -eq 0) {
             Write-Host "Installation completed successfully."
         }
