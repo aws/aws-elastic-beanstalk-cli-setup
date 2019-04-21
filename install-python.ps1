@@ -24,20 +24,25 @@ function Get-PythonInstallationTarget {
 function Download-Python {
     $url = Get-PythonInstallationTarget
     $client = New-Object System.Net.WebClient
-    $client.DownloadFile($url, $PythonInstaller)
-    return $True
+    try {
+        $client.DownloadFile($url, $PythonInstaller)
+    } catch {
+        Write-Host "Failed to download Python. The following exception was raised:"
+        Write-Host $_.exception
+
+        Exit 1
+    }
 }
 
 if (Assert-IsPythonRequired) {
-    if (Download-Python) {
-        Write-Host "Installing Python. Do not close this window."
-        $install = Start-Process $PythonInstaller -ArgumentList "/quiet InstallAllUsers=1 PrependPath=1" -PassThru -wait
-        if ($install.ExitCode -eq 0) {
-            Write-Host "Installation completed successfully."
-        }
-        else {
-            Write-Host "Installation failed with exit code $install.ExitCode"
-        }
+    Download-Python
+    Write-Host "Installing Python. Do not close this window."
+    $install = Start-Process $PythonInstaller -ArgumentList "/quiet InstallAllUsers=1 PrependPath=1" -PassThru -wait
+    if ($install.ExitCode -eq 0) {
+        Write-Host "Installation completed successfully."
+    }
+    else {
+        Write-Host "Installation failed with exit code $install.ExitCode"
     }
 }
 
