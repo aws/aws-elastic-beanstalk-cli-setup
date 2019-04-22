@@ -51,8 +51,10 @@ function Install-Python {
         Write-Host "Installation completed successfully." -ForegroundColor Green
     } elseif ($install.ExitCode -eq 1602) {
         Write-Host "Installer was exited by the user." -ForegroundColor Red
+        Exit 1
     } else {
         Write-Host "Installation failed with exit code $install.ExitCode" -ForegroundColor Red
+        Exit 1
     }
 }
 
