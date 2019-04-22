@@ -1,8 +1,8 @@
 $python = "$PSScriptRoot\python3.7.3.exe"
 
 function Assert-IsPythonRequired {
-   $result = Get-WmiObject -Namespace "root/cimv2" -Class Win32_Product -Filter "Name Like 'Python 3.7.3 Executables%'"
-   return $result.Count -eq 0
+    $result = Get-WmiObject -Namespace "root/cimv2" -Class Win32_Product -Filter "Name Like 'Python 3.7.3 Executables%'"
+    return $result.Count -eq 0
 }
 
 function Cleanup {

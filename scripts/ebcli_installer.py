@@ -120,7 +120,7 @@ exit(_exec_cmd(['{bin_location}/eb'] + sys.argv[1:]))
 
 PATH_EXPORTER_SCRIPTS = {
     'bat': 'WSCript {path_exporter_script}\n',
-    'vbs': ' '.join(
+    'vbs': '\n'.join(
         [
             'Set wshShell = CreateObject( "WScript.Shell" )',
             'Set wshUserEnv = wshShell.Environment( "USER" )',
@@ -260,7 +260,7 @@ def _activate_virtualenv(virtualenv_location):
 
 
 @Step('Finishing up')
-def _announce_success(virtualenv_location):
+def _announce_success(virtualenv_location, hide_export_recommendation):
     """
     Function checks whether the installation location is already in PATH.
 
@@ -283,6 +283,11 @@ def _announce_success(virtualenv_location):
     :param virtualenv_location: the relative or absolute path to the location
                                 where the virtualenv, ".ebcli-virtual-env", was
                                 created.
+    :param hide_export_recommendation: boolean indicating whether or not to
+                                       hide PATH export instructions. Useful
+                                       when invoked from shells that allow
+                                       modifying system PATH variable
+                                       conveniently.
     :return: None
     """
     new_location = _eb_wrapper_location(virtualenv_location)
@@ -313,13 +318,15 @@ def _announce_success(virtualenv_location):
                 )
 
                 _print_success_message('Success!')
-                _print_recommendation_message(
-                    INSTALLATION_SUCCESS_MESSAGE_WITH_EXPORT_RECOMMENDATION__WINDOWS
-                        .format(
-                        path_exporter_bat=path_exporter_wrapper,
-                        path_exporter=path_exporter
+
+                if not hide_export_recommendation:
+                    _print_recommendation_message(
+                        INSTALLATION_SUCCESS_MESSAGE_WITH_EXPORT_RECOMMENDATION__WINDOWS
+                            .format(
+                            path_exporter_bat=path_exporter_wrapper,
+                            path_exporter=path_exporter
+                        )
                     )
-                )
         else:
             _print_success_message('Success!')
             _print_recommendation_message(
@@ -344,7 +351,18 @@ def _print_in_foreground(message, color_number):
     :return: None
     """
     if sys.platform.startswith('win32'):
-        print(message)
+        import colorama
+        colorama.init()
+        if color_number == GREEN_COLOR_CODE:
+            print(colorama.Fore.GREEN + message)
+        elif color_number == RED_COLOR_CODE:
+            print(colorama.Fore.RED + message)
+        elif color_number == YELLOW_COLOR_CODE:
+            print(colorama.Fore.LIGHTYELLOW_EX + message)
+        else:
+            print(message)
+        print(colorama.Style.RESET_ALL)
+
     else:
         # Courtesy https://misc.flogisoft.com/bash/tip_colors_and_formatting
         print(
@@ -740,6 +758,11 @@ def _parse_arguments():
         help="path to the virtualenv installation to use to create the EBCLI's virtualenv"
     )
     parser.add_argument(
+        '-i', '--hide-export-recommendation',
+        action='store_true',
+        help="boolean to hide recommendation to modify PATH"
+    )
+    parser.add_argument(
         '-l', '--location',
         help='location to store the awsebcli packages and its dependencies in'
     )
@@ -846,4 +869,7 @@ if __name__ == '__main__':
         arguments_context.ebcli_source
     )
     _generate_ebcli_wrappers(virtualenv_location)
-    _announce_success(virtualenv_location)
+    _announce_success(
+        virtualenv_location,
+        arguments_context.hide_export_recommendation
+    )
