@@ -18,7 +18,7 @@ This repository hosts scripts to generate self-contained installations of the [E
 
 Use the following:
 
-```bash
+```shell
 git clone https://github.com/aws/aws-elastic-beanstalk-cli-setup.git
 ```
 
@@ -26,13 +26,13 @@ git clone https://github.com/aws/aws-elastic-beanstalk-cli-setup.git
 
 On **Bash** and **Zsh**:
 
-```bash
+```shell
 ./aws-elasticbeanstalk-cli-setup/scripts/bundled_installer
 ```
 
 In **PowerShell** or in a **Command Prompt** window:
 
-```bash
+```ps1
 .\aws-elasticbeanstalk-cli-setup\scripts\bundled_installer
 ```
 
@@ -56,31 +56,31 @@ To install the EB CLI, `bundled_installer` runs `ebcli_installer.py`. `ebcli_ins
 
   - To install a **specific version** of the EB CLI:
 
-    ```bash
+    ```shell
     python scripts/ebcli_installer.py --version 3.14.13
     ```
 
   - To install the EB CLI with a specific **version of Python** (the Python version doesn't need to be in `$PATH`):
 
-    ```bash
+    ```shell
     python scripts/ebcli_installer.py --python-installation /path/to/some/python/on/your/computer
     ```
 
   - To install the EB CLI **from source** (Git repository, .tar file, .zip file):
-    ```bash
+    ```shell
     python scripts/ebcli_installer.py --ebcli-source /path/to/awsebcli.zip
 
     python scripts/ebcli_installer.py --ebcli-source /path/to/EBCLI/codebase/on/your/computer
     ```
   - To install the EB CLI at a **specific location**, instead of in the standard `.ebcli-virtual-env` directory in the user's home directory:
 
-    ```bash
+    ```shell
     python scripts/ebcli_installer.py --location /path/to/ebcli/installation/location
     ```
 
 Run the following command to view the help text for `ebcli_installer.py`:
 
-```bash
+```shell
 python scripts/ebcli_installer.py --help
 ```
 
@@ -94,13 +94,13 @@ python scripts/ebcli_installer.py --help
 
 On **Bash** and **Zsh**:
 
-```bash
+```shell
 python aws-elasticbeanstalk-cli-setup/scripts/ebcli_installer.py
 ```
 
 In **PowerShell** and from the **Command Prompt** window:
 
-```bash
+```shell
 python .\aws-elasticbeanstalk-cli-setup\scripts\ebcli_installer.py
 ```
 
