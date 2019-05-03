@@ -36,6 +36,12 @@ In **PowerShell** or in a **Command Prompt** window:
 .\aws-elasticbeanstalk-cli-setup\scripts\bundled_installer
 ```
 
+**NOTE:** In PowerShell, upon executing `bundled_installer`, if you see an error with the message "execution of scripts is disabled on this system", set the [execution policy](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-6) to "RemoteSigned".
+
+```ps1
+Set-ExecutionPolicy RemoteSigned
+```
+
 #### 2.3. After installation
 
 On Linux and OS X, the output will contain instructions to add the EB CLI (and Python) executable file to the shell's `$PATH` variable, if it isn't already in it.
