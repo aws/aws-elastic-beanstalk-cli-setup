@@ -93,7 +93,7 @@ def _exec_cmd(args):
     the return code of the subprocess to remain None. In all such cases, the
     wrapper will assume a failure and return a non-zero exit code.
     \"\"\"
-    p = subprocess.Popen(' '.join(args), shell=True)
+    p = subprocess.Popen(args)
     try:
         p.communicate()
     except KeyboardInterrupt:
