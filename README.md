@@ -27,13 +27,13 @@ git clone https://github.com/aws/aws-elastic-beanstalk-cli-setup.git
 On **Bash** and **Zsh**:
 
 ```shell
-./aws-elasticbeanstalk-cli-setup/scripts/bundled_installer
+./aws-elastic-beanstalk-cli-setup/scripts/bundled_installer
 ```
 
 In **PowerShell** or in a **Command Prompt** window:
 
 ```ps1
-.\aws-elasticbeanstalk-cli-setup\scripts\bundled_installer
+.\aws-elastic-beanstalk-cli-setup\scripts\bundled_installer
 ```
 
 **NOTE:** In PowerShell, upon executing `bundled_installer`, if you see an error with the message "execution of scripts is disabled on this system", set the [execution policy](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-6) to "RemoteSigned".
