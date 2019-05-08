@@ -68,7 +68,7 @@ function Update-UserEnvironmentPath {
 
 function Install-Virtualenv {
     Write-StepTitle "Installing virtualenv"
-    Invoke-Expression "pip install virtualenv --target $PSScriptRoot\virtualenv --upgrade"
+    Invoke-Expression "pip install virtualenv --target $PSScriptRoot\virtualenv"
 }
 
 $PythonExecutable = Get-PythonExecutable
