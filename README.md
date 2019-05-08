@@ -24,19 +24,25 @@ git clone https://github.com/aws/aws-elastic-beanstalk-cli-setup.git
 
 #### 2.2. Install the EB CLI
 
-On **Bash** and **Zsh**:
+On **Bash** and **Zsh** on OS X/Linux:
 
 ```shell
 ./aws-elastic-beanstalk-cli-setup/scripts/bundled_installer
 ```
 
+**NOTE:** On OS X, if you see installation failing with the following message, "zipimport.ZipImportError: can't decompress data; zlib not available", perform the following exports and then retry the above command:
+
+```bash
+export LDFLAGS="-L/usr/local/opt/zlib/lib"
+export CPPFLAGS="-I/usr/local/opt/zlib/include"
+```
 In **PowerShell** or in a **Command Prompt** window:
 
 ```ps1
 .\aws-elastic-beanstalk-cli-setup\scripts\bundled_installer
 ```
 
-**NOTE:** In PowerShell, upon executing `bundled_installer`, if you see an error with the message "execution of scripts is disabled on this system", set the [execution policy](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-6) to "RemoteSigned".
+**NOTE:** In PowerShell, upon executing `bundled_installer`, if you see an error with the message "execution of scripts is disabled on this system", set the [execution policy](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-6) to "RemoteSigned" and then retry the above command.
 
 ```ps1
 Set-ExecutionPolicy RemoteSigned
