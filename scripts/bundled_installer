@@ -7,7 +7,7 @@
 #
 #   - the latest (or close to it) Python
 #   - the latest version of the EBCLI
-export PYTHON_VERSION="3.7.3"
+export PYTHON_VERSION="3.7.2"
 export PYENV_ROOT="$HOME/.pyenv"
 export PYENV_BIN="$PYENV_ROOT/versions/$PYTHON_VERSION/bin"
 

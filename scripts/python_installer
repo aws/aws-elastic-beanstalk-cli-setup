@@ -23,7 +23,7 @@
 BASH_PROFILE="$HOME/.bash_profile"
 ZSHENV="$HOME/.zshrc"
 COMMAND_LINE_ARGS=$*
-PYTHON_VERSION=${PYTHON_VERSION:="3.7.3"}
+PYTHON_VERSION=${PYTHON_VERSION:="3.7.2"}
 PYENV_ROOT=${PYENV_ROOT:="$HOME/.pyenv"}
 
 if [ ! -d ${PYENV_ROOT} ]; then
@@ -118,7 +118,7 @@ function checkout_specific_branch() {
 }
 
 function install_pyenv_build() {
-    ${PYENV_REPOSITORY_LOCATION} ./install.sh
+    PREFIX=${PYENV_REPOSITORY_LOCATION} ./install.sh
 }
 
 function clone_pyenv_repository() {
@@ -129,7 +129,7 @@ function clone_pyenv_repository() {
         THIS_DIRECTORY=`pwd`
         cd "$PYENV_REPOSITORY_LOCATION"
         checkout_specific_branch
-        cd pyenv/plugins/python-build
+        cd plugins/python-build
         install_pyenv_build
         cd ${THIS_DIRECTORY}
         exit_if_return_code_is_non_zero
