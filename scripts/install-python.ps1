@@ -34,6 +34,7 @@ function Get-PythonMSI {
     $url = Get-PythonInstallationTarget
     $client = New-Object System.Net.WebClient
     try {
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
         $client.DownloadFile($url, $PythonInstaller)
     } catch {
         Write-Host "Failed to download Python. The following exception was raised:" -ForegroundColor Red
