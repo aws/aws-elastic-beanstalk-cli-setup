@@ -446,7 +446,7 @@ def _create_virtualenv(
         )
 
     virtualenv_args = [
-        virtualenv_executable,
+        virtualenv_executable or 'virtualenv',
         virtualenv_directory
     ]
 
