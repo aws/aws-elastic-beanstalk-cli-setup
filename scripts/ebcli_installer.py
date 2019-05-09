@@ -56,8 +56,7 @@ EXECUTABLE_WRAPPERS = {
             '',
             'REM activate virtualenv, call eb and deactivate virtualenv',
             'CALL {bin_location}\\activate.bat',
-            '@echo on',
-            'CALL {bin_location}\\eb.exe %args%',
+            '@start CALL {bin_location}\\eb.exe %args%',
             '@echo off',
             'deactivate'
         ]
