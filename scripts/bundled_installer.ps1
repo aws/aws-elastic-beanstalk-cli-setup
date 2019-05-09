@@ -52,6 +52,6 @@ Exit-OnFailure
 $PathExporter = "$HomeDir\.ebcli-virtual-env\executables\path_exporter.vbs"
 if ([System.IO.File]::Exists($PathExporter)) {
     Write-StepTitle "III. Exporting `eb` PATH's                    "
-    & "$HomeDir\.ebcli-virtual-env\executables\path_exporter.vbs"
+    Start-Process "cscript.exe" -ArgumentList "$HomeDir\.ebcli-virtual-env\executables\path_exporter.vbs" -Wait
     Update-UserEnvironmentPath
 }
