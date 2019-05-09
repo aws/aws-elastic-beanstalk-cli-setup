@@ -56,8 +56,7 @@ EXECUTABLE_WRAPPERS = {
             '',
             'REM activate virtualenv, call eb and deactivate virtualenv',
             'CALL {bin_location}\\activate.bat',
-            '@echo on',
-            'CALL {bin_location}\\eb.exe %args%',
+            '@start CALL {bin_location}\\eb.exe %args%',
             '@echo off',
             'deactivate'
         ]
@@ -447,7 +446,7 @@ def _create_virtualenv(
         )
 
     virtualenv_args = [
-        virtualenv_executable,
+        virtualenv_executable or 'virtualenv',
         virtualenv_directory
     ]
 
@@ -488,9 +487,9 @@ def _locate_virtualenv_executable():
 
     if not virtualenv_executable:
         if not _pip_executable_found(True):
-            _error(PIP_AND_VIRTUALENV_NOT_FOUND)
+            print(PIP_AND_VIRTUALENV_NOT_FOUND)
         else:
-            _error(VIRTUALENV_NOT_FOUND)
+            print(VIRTUALENV_NOT_FOUND)
 
     return virtualenv_executable
 
