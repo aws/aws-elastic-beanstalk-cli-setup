@@ -64,6 +64,11 @@ function echo_with_indentation() {
     echo -e "   $message"
 }
 
+function echo_error_message () {
+    local message=$1
+    echo_with_indentation "\033[38;5;9m$message\033[0m"
+}
+
 function echo_recommendation_message() {
     local message=$1
     echo_with_indentation "\033[38;5;11m$message\033[0m"
@@ -146,6 +151,20 @@ function export_pyenv_and_pyenv_repository_paths() {
     export PATH="$PYENV_ROOT/bin:$PYENV_REPOSITORY_LOCATION/bin:$PATH"
 }
 
+function verify_http_client_exists() {
+    if type curl &>/dev/null; then
+        return
+    elif type aria2c &>/dev/null; then
+        return
+    elif [[ "$(wget --version 2>/dev/null || true)" = "GNU Wget 1.1"[0-3]* ]]; then
+        echo_error_message "wget (>= 1.14) or curl (>= 7.18.1) is required to download and install Python."
+        exit 1
+    else
+        echo_error_message "Could not find \`curl\`, \`wget\`, or \`aria2c\`. Please install one of these tools to continue Python installation"
+        exit 1
+    fi
+}
+
 function main() {
     echo_step_title "Determining whether pyenv is already installed and in PATH"
 
@@ -160,6 +179,9 @@ function main() {
 
     echo_step_title "Temporarily export necessary pyenv paths"
     export_pyenv_and_pyenv_repository_paths
+
+    echo_step_title "Checking whether Python can be downloaded (through curl, wget, or aria2c)"
+    verify_http_client_exists
 
     echo_step_title "Installing Python $PYTHON_VERSION"
     install_python
