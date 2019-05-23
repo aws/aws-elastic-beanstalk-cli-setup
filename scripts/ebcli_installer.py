@@ -554,7 +554,10 @@ def _install_ebcli(quiet, version, ebcli_source):
             '--upgrade',
             '--upgrade-strategy', 'eager',
         ]
-    _exec_cmd(install_args, quiet)
+    returncode = _exec_cmd(install_args, quiet)
+
+    if returncode != 0:
+        exit(returncode)
 
 
 def _add_ebcli_stamp(virtualenv_directory):
