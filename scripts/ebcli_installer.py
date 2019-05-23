@@ -426,6 +426,7 @@ def _create_virtualenv(
     """
     virtualenv_location = virtualenv_location or _user_local_directory()
     virtualenv_directory = os.path.join(virtualenv_location, VIRTUALENV_DIR_NAME)
+    python_installation = python_installation or sys.executable
 
     if (
         os.path.exists(virtualenv_directory)
