@@ -426,6 +426,7 @@ def _create_virtualenv(
     """
     virtualenv_location = virtualenv_location or _user_local_directory()
     virtualenv_directory = os.path.join(virtualenv_location, VIRTUALENV_DIR_NAME)
+    python_installation = python_installation or sys.executable
 
     if (
         os.path.exists(virtualenv_directory)
@@ -447,11 +448,11 @@ def _create_virtualenv(
 
     virtualenv_args = [
         virtualenv_executable or 'virtualenv',
-        virtualenv_directory
+        '"{}"'.format(virtualenv_directory)
     ]
 
     python_installation and virtualenv_args.extend(
-        ['-p', python_installation]
+        ['-p', '"{}"'.format(python_installation)]
     )
 
     if _exec_cmd(virtualenv_args, quiet) != 0:
@@ -553,7 +554,10 @@ def _install_ebcli(quiet, version, ebcli_source):
             '--upgrade',
             '--upgrade-strategy', 'eager',
         ]
-    _exec_cmd(install_args, quiet)
+    returncode = _exec_cmd(install_args, quiet)
+
+    if returncode != 0:
+        exit(returncode)
 
 
 def _add_ebcli_stamp(virtualenv_directory):

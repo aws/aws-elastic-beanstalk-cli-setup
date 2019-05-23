@@ -33,6 +33,7 @@ On **Bash** and **Zsh** on OS X/Linux:
 **NOTE:** On OS X, if you see installation failing with the following message, "zipimport.ZipImportError: can't decompress data; zlib not available", perform the following exports and then retry the above command:
 
 ```bash
+brew install zlib
 export LDFLAGS="-L/usr/local/opt/zlib/lib"
 export CPPFLAGS="-I/usr/local/opt/zlib/include"
 ```
