@@ -447,11 +447,11 @@ def _create_virtualenv(
 
     virtualenv_args = [
         virtualenv_executable or 'virtualenv',
-        virtualenv_directory
+        '"{}"'.format(virtualenv_directory)
     ]
 
     python_installation and virtualenv_args.extend(
-        ['-p', python_installation]
+        ['-p', '"{}"'.format(python_installation)]
     )
 
     if _exec_cmd(virtualenv_args, quiet) != 0:
