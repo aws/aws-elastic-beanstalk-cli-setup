@@ -30,30 +30,56 @@ On **Bash** and **Zsh** on OS X/Linux:
 ./aws-elastic-beanstalk-cli-setup/scripts/bundled_installer
 ```
 
-**NOTE:** On OS X, if you see installation failing with the following message, "zipimport.ZipImportError: can't decompress data; zlib not available", perform the following exports and then retry the above command:
-
-```bash
-brew install zlib
-export LDFLAGS="-L/usr/local/opt/zlib/lib"
-export CPPFLAGS="-I/usr/local/opt/zlib/include"
-```
 In **PowerShell** or in a **Command Prompt** window:
 
 ```ps1
 .\aws-elastic-beanstalk-cli-setup\scripts\bundled_installer
 ```
 
-**NOTE:** In PowerShell, upon executing `bundled_installer`, if you see an error with the message "execution of scripts is disabled on this system", set the [execution policy](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-6) to "RemoteSigned" and then retry the above command.
+#### 2.3. Troubleshooting
 
-```ps1
-Set-ExecutionPolicy RemoteSigned
-```
+- **Linux**
 
-#### 2.3. After installation
+    Almost all installation problems experienced by customers on Linux/OS X have been due to missing libraries such as OpenSSL, bzip2, etc.
+
+  - On **Ubuntu/Debian**, run:
+
+    ```shell
+    apt-get install \
+        zlib1g-dev libssl-dev libncurses-dev libffi-dev \
+        libsqlite3-dev libreadline-dev libbz2-dev
+    ```
+
+  - On **Amazon Linux/Fedora**, run:
+
+    ```shell
+    yum install \
+        zlib-devel openssl-devel ncurses-devel libffi-devel \
+        sqlite-devel.x86_64 readline-devel.x86_64 bzip2-devel.x86_64
+    ```
+
+- **OS X**
+
+  Most problems on OS X have been with loading and linking OpenSSL and zlib. The following commands install necessary packages and tell the Python installer where to find them.
+
+    ```
+    brew install zlib openssl readline
+    CFLAGS="-I$(brew --prefix openssl)/include -I$(brew --prefix readline)/include -I$(xcrun --show-sdk-path)/usr/include" LDFLAGS="-L$(brew --prefix openssl)/lib -L$(brew --prefix readline)/lib -L$(brew --prefix zlib)/lib"
+    ```
+
+- **Windows**
+
+    - In PowerShell, upon executing `bundled_installer`, if you see an error with the message "execution of scripts is disabled on this system", set the [execution policy](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-6) to "RemoteSigned" and then rerun `bundled_installer`.
+      
+      ```ps1
+      Set-ExecutionPolicy RemoteSigned
+      ```
+
+#### 2.4. After installation
 
 On Linux and OS X, the output will contain instructions to add the EB CLI (and Python) executable file to the shell's `$PATH` variable, if it isn't already in it.
 
-#### 2.4. Demo execution of `bundled_installer`
+#### 2.5. Demo execution of `bundled_installer`
 
 ![Demo](./DEMO.png)
 
