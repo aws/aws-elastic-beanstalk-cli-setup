@@ -46,13 +46,14 @@ In **PowerShell** or in a **Command Prompt** window:
 
     ```shell
     apt-get install \
-        zlib1g-dev libssl-dev libncurses-dev libffi-dev \
-        libsqlite3-dev libreadline-dev libbz2-dev
+        build-essential zlib1g-dev libssl-dev libncurses-dev \
+        libffi-dev libsqlite3-dev libreadline-dev libbz2-dev
     ```
 
   - On **Amazon Linux/Fedora**, run:
 
     ```shell
+    yum group install "Development Tools"
     yum install \
         zlib-devel openssl-devel ncurses-devel libffi-devel \
         sqlite-devel.x86_64 readline-devel.x86_64 bzip2-devel.x86_64
@@ -73,6 +74,12 @@ In **PowerShell** or in a **Command Prompt** window:
       
       ```ps1
       Set-ExecutionPolicy RemoteSigned
+      ```
+    - If you encounter an error that states "No module named 'virtualenv'", then you can perform the following commands to remedy this issue:
+      ```ps1
+      pip uninstall -y virtualenv
+      pip install virtualenv
+      python.\aws-elastic-beanstalk-cli-setup\scripts\ebcli_installer.py
       ```
 
 #### 2.4. After installation
