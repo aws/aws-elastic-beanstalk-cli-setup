@@ -183,7 +183,7 @@ function main() {
     echo_step_title "Checking whether Python can be downloaded (through curl, wget, or aria2c)"
     verify_http_client_exists
 
-    echo_step_title "Installing Python $PYTHON_VERSION"
+    echo_step_title "Installing Python $PYTHON_VERSION. This step may take a few minutes"
     install_python
 
     echo_step_title "Installing virtualenv using $PYENV_BIN/pip"
