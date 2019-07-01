@@ -135,13 +135,13 @@ python scripts/ebcli_installer.py --help
 On **Bash** and **Zsh**:
 
 ```shell
-python aws-elasticbeanstalk-cli-setup/scripts/ebcli_installer.py
+python aws-elastic-beanstalk-cli-setup/scripts/ebcli_installer.py
 ```
 
 In **PowerShell** and from the **Command Prompt** window:
 
 ```shell
-python .\aws-elasticbeanstalk-cli-setup\scripts\ebcli_installer.py
+python .\aws-elastic-beanstalk-cli-setup\scripts\ebcli_installer.py
 ```
 
 #### 4.2. For the **experienced Python developer**, what's the advantage of this mode of installation instead of regular `pip` inside a `virtualenv`?
@@ -169,7 +169,7 @@ no `eb`-related commands work because the correct set of directories isn't refer
 
 Typically, for such developers, use of `virtualenv` is the correct path forward. However, this becomes yet another hurdle before using `eb`.
 
-Another common problem is where users install Python and `pip` in ways that ElasticBeanstalk Documentation doesn't recommend, such as using arbitrary Personal Package Archives
+Another common problem is where users install Python and `pip` in ways that Elastic Beanstalk Documentation doesn't recommend, such as using arbitrary Personal Package Archives
 (PPAs) on Ubuntu, or similar unmaintained sources that lack scrutiny.
 
 #### 4.4. Can I execute the Bash scripts in a Cygwin, git-bash, or other Bash-like shell on Windows?
