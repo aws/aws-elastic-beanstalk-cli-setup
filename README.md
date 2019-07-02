@@ -22,7 +22,7 @@ Use the following:
 git clone https://github.com/aws/aws-elastic-beanstalk-cli-setup.git
 ```
 
-#### 2.2. Install the EB CLI
+#### 2.2. Install/Upgrade the EB CLI
 
 On **Bash** and **Zsh** on OS X/Linux:
 
