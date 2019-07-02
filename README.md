@@ -79,7 +79,7 @@ In **PowerShell** or in a **Command Prompt** window:
       ```ps1
       pip uninstall -y virtualenv
       pip install virtualenv
-      python.\aws-elastic-beanstalk-cli-setup\scripts\ebcli_installer.py
+      python .\aws-elastic-beanstalk-cli-setup\scripts\ebcli_installer.py
       ```
 
 #### 2.4. After installation
