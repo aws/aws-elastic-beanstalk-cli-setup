@@ -22,7 +22,7 @@ Use the following:
 git clone https://github.com/aws/aws-elastic-beanstalk-cli-setup.git
 ```
 
-#### 2.2. Install the EB CLI
+#### 2.2. Install/Upgrade the EB CLI
 
 On **Bash** and **Zsh** on OS X/Linux:
 
@@ -79,7 +79,7 @@ In **PowerShell** or in a **Command Prompt** window:
       ```ps1
       pip uninstall -y virtualenv
       pip install virtualenv
-      python.\aws-elastic-beanstalk-cli-setup\scripts\ebcli_installer.py
+      python .\aws-elastic-beanstalk-cli-setup\scripts\ebcli_installer.py
       ```
 
 #### 2.4. After installation
