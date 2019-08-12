@@ -159,6 +159,8 @@ function verify_http_client_exists() {
     elif [[ "$(wget --version 2>/dev/null || true)" = "GNU Wget 1.1"[0-3]* ]]; then
         echo_error_message "wget (>= 1.14) or curl (>= 7.18.1) is required to download and install Python."
         exit 1
+    elif [ -n "$(wget --version 2>/dev/null)" ]; then
+        return
     else
         echo_error_message "Could not find \`curl\`, \`wget\`, or \`aria2c\`. Please install one of these tools to continue Python installation"
         exit 1
