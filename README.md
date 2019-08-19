@@ -10,6 +10,34 @@ This repository hosts scripts to generate self-contained installations of the [E
 
 ------
 
+
+### 1.1. Prerequisites
+
+If you don't have Git, install it from [Git Downloads](https://git-scm.com/downloads).
+
+Python, which the EBCLI Installer depends on, requires the following prerequisites for each operating system.
+
+- **Linux**
+    - **Ubuntu and Debian**
+
+        ```shell
+        build-essential zlib1g-dev libssl-dev libncurses-dev libffi-dev libsqlite3-dev libreadline-dev libbz2-dev
+        ```
+
+    - **Amazon Linux and Fedora**
+
+       ```shell
+       "Development Tools" zlib-devel openssl-devel ncurses-devel libffi-devel sqlite-devel.x86_64 readline-devel.x86_64 bzip2-devel.x86_64
+       ```
+
+- **macOS**
+
+     ```shell
+     openssl zlib readline
+     ```
+
+------
+
 ### 2. Use
 
 ------
@@ -24,7 +52,7 @@ git clone https://github.com/aws/aws-elastic-beanstalk-cli-setup.git
 
 #### 2.2. Install/Upgrade the EB CLI
 
-On **Bash** and **Zsh** on OS X/Linux:
+On **Bash** and **Zsh** on macOS and Linux:
 
 ```shell
 ./aws-elastic-beanstalk-cli-setup/scripts/bundled_installer
@@ -40,9 +68,9 @@ In **PowerShell** or in a **Command Prompt** window:
 
 - **Linux**
 
-    Almost all installation problems experienced by customers on Linux/OS X have been due to missing libraries such as OpenSSL, bzip2, etc.
+    Most installation problems have been due to missing libraries such as `OpenSSL`.
 
-  - On **Ubuntu/Debian**, run:
+  - On **Ubuntu and Debian**, run the following command to install dependencies.
 
     ```shell
     apt-get install \
@@ -50,7 +78,7 @@ In **PowerShell** or in a **Command Prompt** window:
         libffi-dev libsqlite3-dev libreadline-dev libbz2-dev
     ```
 
-  - On **Amazon Linux/Fedora**, run:
+  - On **Amazon Linux and Fedora**, run the following command to install dependencies.
 
     ```shell
     yum group install "Development Tools"
@@ -59,9 +87,9 @@ In **PowerShell** or in a **Command Prompt** window:
         sqlite-devel.x86_64 readline-devel.x86_64 bzip2-devel.x86_64
     ```
 
-- **OS X**
+- **macOS**
 
-  Most problems on OS X have been with loading and linking OpenSSL and zlib. The following commands install necessary packages and tell the Python installer where to find them.
+  Most installation problems on macOS are related to loading and linking OpenSSL and zlib. The following command installs the necessary packages and tells the Python installer where to find them:
 
     ```
     brew install zlib openssl readline
@@ -70,12 +98,12 @@ In **PowerShell** or in a **Command Prompt** window:
 
 - **Windows**
 
-    - In PowerShell, upon executing `bundled_installer`, if you see an error with the message "execution of scripts is disabled on this system", set the [execution policy](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-6) to "RemoteSigned" and then rerun `bundled_installer`.
+    - In PowerShell, if you encounter an error with the message "execution of scripts is disabled on this system", set the [execution policy](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-6) to `"RemoteSigned"` and then rerun `bundled_installer`.
       
       ```ps1
       Set-ExecutionPolicy RemoteSigned
       ```
-    - If you encounter an error that states "No module named 'virtualenv'", then you can perform the following commands to remedy this issue:
+    - If you encounter an error with the message "No module named 'virtualenv'", use the following commands to install `virtualenv` and the EB CLI:
       ```ps1
       pip uninstall -y virtualenv
       pip install virtualenv
@@ -84,7 +112,7 @@ In **PowerShell** or in a **Command Prompt** window:
 
 #### 2.4. After installation
 
-On Linux and OS X, the output will contain instructions to add the EB CLI (and Python) executable file to the shell's `$PATH` variable, if it isn't already in it.
+On Linux and macOS, the output contains instructions to add the EB CLI (and Python) executable file to the shell's `$PATH` variable, if it isn't already in it.
 
 #### 2.5. Demo execution of `bundled_installer`
 
