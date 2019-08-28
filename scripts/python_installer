@@ -24,7 +24,9 @@ BASH_PROFILE="$HOME/.bash_profile"
 ZSHENV="$HOME/.zshrc"
 COMMAND_LINE_ARGS=$*
 PYTHON_VERSION=${PYTHON_VERSION:="3.7.2"}
+SUPPRESS_PATH_EXPORT_MESSAGE=${SUPPRESS_PATH_EXPORT_MESSAGE:=false}
 PYENV_ROOT=${PYENV_ROOT:="$HOME/.pyenv"}
+export PYTHON_ALREADY_IN_PATH=false
 
 if [ ! -d ${PYENV_ROOT} ]; then
     mkdir ${PYENV_ROOT}
@@ -105,10 +107,15 @@ function install_python() {
     echo_success_message " - Python $PYTHON_VERSION is installed at $PYENV_BIN"
 
     if python_is_not_in_path; then
-        print_path_export_instructions
+        if [ ${SUPPRESS_PATH_EXPORT_MESSAGE} = false ] ; then
+            print_path_export_instructions
+        fi
     else
+        PYTHON_ALREADY_IN_PATH=true
         echo ""
-        echo_with_indentation " - $PYENV_BIN is already in PATH no further action need be taken."
+        if [ ${SUPPRESS_PATH_EXPORT_MESSAGE} = false ] ; then
+            echo_with_indentation " - $PYENV_BIN is already in PATH no further action need be taken."
+        fi
     fi
 }
 
@@ -191,4 +198,6 @@ function main() {
     echo_step_title "Installing virtualenv using $PYENV_BIN/pip"
     install_virtualenv
 }
+export print_path_export_instructions
+export echo_with_indentation
 main

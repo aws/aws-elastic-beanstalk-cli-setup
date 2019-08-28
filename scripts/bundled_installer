@@ -10,6 +10,9 @@
 export PYTHON_VERSION="3.7.2"
 export PYENV_ROOT="$HOME/.pyenv"
 export PYENV_BIN="$PYENV_ROOT/versions/$PYTHON_VERSION/bin"
+BASH_PROFILE="$HOME/.bash_profile"
+ZSHENV="$HOME/.zshrc"
+PYTHON_ALREADY_IN_PATH=false
 
 function change_to_scripts_directory() {
     SCRIPTS_DIRECTORY=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
@@ -37,7 +40,8 @@ function install_python() {
     echo_with_colors_inverted "I. Installing Python                          "
     echo_with_colors_inverted "=============================================="
     if [ -f python_installer ]; then
-        ./python_installer
+        SUPPRESS_PATH_EXPORT_MESSAGE=true
+        source ./python_installer SUPPRESS_PATH_EXPORT_MESSAGE
         exit_if_return_code_is_non_zero
     fi
 }
@@ -55,6 +59,13 @@ function install_ebcli() {
     fi
 }
 
+function print_python_path_export_message() {
+    if [ "${PYTHON_ALREADY_IN_PATH}" = false ]; then
+        print_path_export_instructions
+    fi
+}
+
 change_to_scripts_directory
 install_python
 install_ebcli
+print_python_path_export_message
