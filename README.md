@@ -95,6 +95,7 @@ In **PowerShell** or in a **Command Prompt** window:
     brew install zlib openssl readline
     CFLAGS="-I$(brew --prefix openssl)/include -I$(brew --prefix readline)/include -I$(xcrun --show-sdk-path)/usr/include" LDFLAGS="-L$(brew --prefix openssl)/lib -L$(brew --prefix readline)/lib -L$(brew --prefix zlib)/lib"
     ```
+    Run `brew info` to get the latest environment variable export suggestions, such as `brew info zlib`
 
 - **Windows**
 
