@@ -33,7 +33,7 @@ Python, which the EBCLI Installer depends on, requires the following prerequisit
 - **macOS**
 
      ```shell
-     openssl zlib readline
+     Xcode openssl zlib readline
      ```
 
 ------
@@ -100,7 +100,7 @@ In **PowerShell** or in a **Command Prompt** window:
 - **Windows**
 
     - In PowerShell, if you encounter an error with the message "execution of scripts is disabled on this system", set the [execution policy](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-6) to `"RemoteSigned"` and then rerun `bundled_installer`.
-      
+
       ```ps1
       Set-ExecutionPolicy RemoteSigned
       ```
