@@ -21,19 +21,20 @@ Python, which the EBCLI Installer depends on, requires the following prerequisit
     - **Ubuntu and Debian**
 
         ```shell
-        build-essential zlib1g-dev libssl-dev libncurses-dev libffi-dev libsqlite3-dev libreadline-dev libbz2-dev
+        apt install -y build-essential zlib1g-dev libssl-dev libncurses-dev libffi-dev libsqlite3-dev libreadline-dev libbz2-dev
         ```
 
     - **Amazon Linux and Fedora**
 
        ```shell
-       "Development Tools" zlib-devel openssl-devel ncurses-devel libffi-devel sqlite-devel.x86_64 readline-devel.x86_64 bzip2-devel.x86_64
+       dnf install -y "Development Tools" zlib-devel openssl-devel ncurses-devel libffi-devel sqlite-devel.x86_64 readline-devel.x86_64 bzip2-devel.x86_64
        ```
 
 - **macOS**
 
+    * Xcode
      ```shell
-     Xcode openssl zlib readline
+     brew install openssl zlib readline
      ```
 
 ------
