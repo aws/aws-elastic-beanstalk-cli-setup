@@ -87,11 +87,11 @@ function print_path_export_instructions() {
     echo_with_indentation ""
     echo_recommendation_message "   1. Bash:"
     echo_with_indentation ""
-    echo_recommendation_message "      echo 'export PATH="${PYENV_BIN}:\$PATH"' >> $BASH_PROFILE && source $BASH_PROFILE"
+    echo_recommendation_message "      echo 'export PATH=\"${PYENV_BIN}:\$PATH\"' >> $BASH_PROFILE && source $BASH_PROFILE"
     echo_with_indentation ""
     echo_recommendation_message "   2. Zsh:"
     echo_with_indentation ""
-    echo_recommendation_message "      echo 'export PATH="${PYENV_BIN}:\$PATH"' >> $ZSHENV && source $ZSHENV"
+    echo_recommendation_message "      echo 'export PATH=\"${PYENV_BIN}:\$PATH\"' >> $ZSHENV && source $ZSHENV"
 }
 
 function python_is_not_in_path() {
