@@ -16,7 +16,7 @@ Usage:
         python /<location to script>/bundled_installer.py
 
         # specify Python executable
-        python scripts/bundled_installer.py -p ~/.pyenv/versions/3.7.2/bin/python
+        python scripts/bundled_installer.py -p ~/.pyenv/versions/3.10.1/bin/python
 
     To view help text:
 
