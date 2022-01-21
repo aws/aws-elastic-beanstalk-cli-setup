@@ -23,6 +23,13 @@ Python, which the EBCLI Installer depends on, requires the following prerequisit
         ```shell
         build-essential zlib1g-dev libssl-dev libncurses-dev libffi-dev libsqlite3-dev libreadline-dev libbz2-dev
         ```
+        
+        _Note:_ `build-essential` is not a standard package and may need to be installed. For example, in Debian you would install it by running
+        
+        ```shell
+        sudo apt update
+        sudo apt install build-essential
+        ```
 
     - **Amazon Linux and Fedora**
 
