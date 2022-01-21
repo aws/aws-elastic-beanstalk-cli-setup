@@ -35,6 +35,13 @@ Python, which the EBCLI Installer depends on, requires the following prerequisit
      ```shell
      Xcode openssl zlib readline
      ```
+     
+You also need to install `pyenv` which is not included above, to do so, use the following command on linux and mac (**Windows**: Please see their website https://github.com/pyenv/pyenv for installation instructions):
+
+```shell
+# Linux and Mac only (at the moment)
+curl https://pyenv.run | bash
+```
 
 ------
 
