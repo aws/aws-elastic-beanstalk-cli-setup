@@ -520,7 +520,7 @@ def _generate_ebcli_wrappers(virtualenv_location):
     ebcli_bat_script_path = os.path.join(executables_dir, 'eb.bat')
 
     if sys.platform.startswith('win32'):
-        with open(ebcli_ps1_script_path, 'w') as script:
+        with open(ebcli_ps1_script_path, 'w', encoding='utf-8-sig') as script:
             script.write(_powershell_script_body(virtualenv_location))
 
         with open(ebcli_bat_script_path, 'w') as script:
