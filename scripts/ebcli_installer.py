@@ -27,6 +27,7 @@ Usage:
 """
 import argparse
 import os
+import shutil
 import subprocess
 import sys
 
@@ -448,6 +449,15 @@ def _create_virtualenv(
             )
         )
 
+    # A pre-existing directory this installer created is not reused in place:
+    # `virtualenv` refreshes only its own core files and leaves unrelated content
+    # behind. Content such as `.pth` files in site-packages -- which Python's
+    # `site` module auto-executes on interpreter startup -- would otherwise
+    # survive the reinstall and run with the privileges of whoever next uses the
+    # venv. Remove it so it is recreated from scratch with no foreign content.
+    if os.path.exists(virtualenv_directory):
+        shutil.rmtree(virtualenv_directory)
+
     virtualenv_args = [
         virtualenv_executable or 'virtualenv',
         '"{}"'.format(virtualenv_directory)
@@ -602,17 +612,43 @@ def _directory_was_created_by_installer(virtualenv_directory):
     Function checks whether `virtualenv_directory` was previously created
     by this script.
 
+    The presence of the stamp file alone is not sufficient proof of
+    ownership: any local principal able to write into `virtualenv_directory`
+    could create an empty file with the well-known stamp name to forge that
+    proof. To defend against this, on POSIX platforms we additionally require
+    that the stamp file be owned by the user running the installer. A stamp
+    planted by a different user (e.g. via `touch` in a shared directory) is
+    owned by that other user and is therefore rejected, so the caller falls
+    through to the "not created by this installer" halt-and-warn path.
+
+    On Windows this ownership comparison is skipped: `os.geteuid()` does not
+    exist there and `st_uid` is always 0, so the POSIX check is inexpressible
+    with these APIs (a proper check would require inspecting NTFS ACLs/SIDs).
+    This is acceptable because the primary protection against reused, tampered
+    directories -- unconditionally removing an existing directory before it is
+    recreated (see `_create_virtualenv`) -- runs on all platforms. On Windows a
+    forged stamp therefore only causes the directory to be silently reused
+    rather than triggering the halt-and-warn path; the directory is still wiped
+    before use, so no attacker-planted content survives.
+
     :param virtualenv_directory: The directory where the EBCLI and its
                                  artifacts will be installed.
     :return: Boolean indicating whether `virtualenv_directory` was created
              by this script or not.
     """
-    return os.path.exists(
-        os.path.join(
-            virtualenv_directory,
-            EBCLI_INSTALLER_STAMP
-        )
-    )
+    stamp_path = os.path.join(virtualenv_directory, EBCLI_INSTALLER_STAMP)
+    if not os.path.exists(stamp_path):
+        return False
+
+    if sys.platform.startswith('win32'):
+        return True
+
+    try:
+        stamp_owner_uid = os.lstat(stamp_path).st_uid
+    except OSError:
+        return False
+
+    return stamp_owner_uid == os.geteuid()
 
 
 def _eb_wrapper_location(virtualenv_location):
