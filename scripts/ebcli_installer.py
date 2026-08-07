@@ -191,7 +191,7 @@ VIRTUALENV_DIR_NAME = '.ebcli-virtual-env'
 
 VIRTUALENV_NOT_FOUND = ' '.join(
     [
-        'ERROR: Could not find and "virtualenv" installed. Ensure'
+        'ERROR: Could not find "virtualenv" installed. Ensure'
         'virtualenv is installed and that it is in PATH before executing'
         'this script.'
     ]
