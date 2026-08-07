@@ -91,7 +91,7 @@ def _exec_cmd(args):
     not have returned leaving the returncode `None`. In this situation, it
     is prudent to wait for the subprocess to exit normally.
     
-    Outside `KyeboardInterrupts`s, it is unclear whether it is possible for
+    Outside `KeyboardInterrupts`s, it is unclear whether it is possible for
     the return code of the subprocess to remain None. In all such cases, the
     wrapper will assume a failure and return a non-zero exit code.
     \"\"\"
@@ -179,8 +179,8 @@ EBCLI has been installed.
 
 PIP_AND_VIRTUALENV_NOT_FOUND = ' '.join(
     [
-        'ERROR: Could not find "pip" and "virtualenv" installed.'
-        'Ensure "pip" and "virtualenv" are installed and that they'
+        'ERROR: Could not find "pip" and "virtualenv" installed.',
+        'Ensure "pip" and "virtualenv" are installed and that they',
         'are in PATH before executing this script.'
     ]
 )
@@ -191,8 +191,8 @@ VIRTUALENV_DIR_NAME = '.ebcli-virtual-env'
 
 VIRTUALENV_NOT_FOUND = ' '.join(
     [
-        'ERROR: Could not find and "virtualenv" installed. Ensure'
-        'virtualenv is installed and that it is in PATH before executing'
+        'ERROR: Could not find "virtualenv" installed. Ensure',
+        'virtualenv is installed and that it is in PATH before executing',
         'this script.'
     ]
 )
