@@ -179,8 +179,8 @@ EBCLI has been installed.
 
 PIP_AND_VIRTUALENV_NOT_FOUND = ' '.join(
     [
-        'ERROR: Could not find "pip" and "virtualenv" installed.'
-        'Ensure "pip" and "virtualenv" are installed and that they'
+        'ERROR: Could not find "pip" and "virtualenv" installed.',
+        'Ensure "pip" and "virtualenv" are installed and that they',
         'are in PATH before executing this script.'
     ]
 )
@@ -191,8 +191,8 @@ VIRTUALENV_DIR_NAME = '.ebcli-virtual-env'
 
 VIRTUALENV_NOT_FOUND = ' '.join(
     [
-        'ERROR: Could not find and "virtualenv" installed. Ensure'
-        'virtualenv is installed and that it is in PATH before executing'
+        'ERROR: Could not find and "virtualenv" installed. Ensure',
+        'virtualenv is installed and that it is in PATH before executing',
         'this script.'
     ]
 )
