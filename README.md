@@ -149,7 +149,8 @@ options:
   Most installation problems on macOS are related to loading and linking OpenSSL and zlib. The following command installs the necessary packages and tells the Python installer where to find them:
 
     ```
-    brew install zlib openssl readline
+    brew install zlib openssl readline pyenv
+    pyenv install 3.7.2
     CFLAGS="-I$(brew --prefix openssl)/include -I$(brew --prefix readline)/include -I$(xcrun --show-sdk-path)/usr/include" LDFLAGS="-L$(brew --prefix openssl)/lib -L$(brew --prefix readline)/lib -L$(brew --prefix zlib)/lib"
     ```
     Run `brew info` to get the latest environment variable export suggestions, such as `brew info zlib`
