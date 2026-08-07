@@ -50,7 +50,7 @@ git clone https://github.com/aws/aws-elastic-beanstalk-cli-setup.git
 On **Bash** or **Zsh**:
 
 ```
-python ./aws-elastic-beanstalk-cli-setup/scripts/ebcli_installer.py
+python3 ./aws-elastic-beanstalk-cli-setup/scripts/ebcli_installer.py
 ```
 
 #### Windows
